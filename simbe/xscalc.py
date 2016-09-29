@@ -32,7 +32,7 @@ class XSCalculator:
 
     def xs_coh(self, wavelen):
         vs = [np.abs(p.F)**2*p.d*p.mult for p in self.diffpeaks if p.d*2>wavelen]
-        return np.sum(vs) * wavelen*wavelen/2*self.uc_vol
+        return np.sum(vs) * wavelen*wavelen/(2*self.uc_vol)
 
     def xs_abs(self, wavelen):
         Q = 2*pi/wavelen
