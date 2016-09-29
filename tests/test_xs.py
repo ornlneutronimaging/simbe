@@ -14,7 +14,10 @@ def test_xscalc():
         xscalc.DiffrPeak(hkl, F, d, mult)
         for hkl, F, d, mult in zip(d['hkl'], d['F'], d['d'], d['mult'])
         ]
-    Fe = xscalc.XSCalculator('Fe', 11.22, 0.4, 2.56, 2.886**3, peaks)
+    # "An experimental determination of the Debye-Waller factor for iron by neutron diffraction" S K Mohanlal
+    # Journal of Physics C: Solid State Physics, Volume 12, Number 17
+    B = 0.35
+    Fe = xscalc.XSCalculator('Fe', 11.22, 0.4, 2.56, 2.886**3, peaks, B)
     print Fe.xs(2200)
     lambdas = np.arange(0.5, 5.5, 0.1)
     xs = [Fe.xs(l) for l in lambdas]
