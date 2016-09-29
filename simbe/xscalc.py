@@ -8,12 +8,15 @@ class XSCalculator:
 
     def __init__(
         self, name, coh_xs, inc_xs, abs_xs_at2200,
+        uc_vol,
         diffpeaks
     ):
         self.name = name
         self.coh_xs = coh_xs
         self.inc_xs = inc_xs
         self.abs_xs_at2200 = abs_xs_at2200
+        self.uc_vol = uc_vol
+        self.diffpeaks = diffpeaks
         return
 
     def xs(self, wavelen):
@@ -28,7 +31,8 @@ class XSCalculator:
         return 0
 
     def xs_coh(self, wavelen):
-        return 0
+        vs = [np.abs(p.F)**2*p.d*p.mult for p in self.diffpeaks if p.d*2>wavelen]
+        return np.sum(vs) * wavelen*wavelen/2*self.uc_vol
 
     def xs_abs(self, wavelen):
         Q = 2*pi/wavelen
@@ -37,15 +41,14 @@ class XSCalculator:
         return self.abs_xs_at2200/v*2200
 
 
-def test():
-    Fe = XSCalculator('Fe', 11.22, 0.4, 2.56)
-    print Fe.xs(2200)
-    lambdas = np.arange(0.5, 5.5, 0.1)
-    xs = Fe.xs(lambdas)
-    from matplotlib import pyplot as plt
-    plt.plot(lambdas, xs)
-    plt.show()
-    return
+class DiffrPeak:
+    
+    def __init__(self, hkl, F, d, mult):
+        self.hkl = hkl
+        self.F = F
+        self.d = d
+        self.mult = mult
+        return
 
 
 if __name__ == '__main__': test()
